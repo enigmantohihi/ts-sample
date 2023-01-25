@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNKO</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form name="send_form">
+            <div class="mb=3">
+                <label class="form-label">Message</label>
+                <input class="form-control" type="text" id="message" name="text">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary" id="sendBtn">Submit</button>
+        </form>
+        <ul class="list-group" id="messages">
+        </ul>
+    </div>
+    <script src="socket.io/socket.io.js"></script>
+    <script>
+        // サーバーへ接続
+        const socket = io();
+        const messages = document.getElementById('messages');
+        const form = document.forms.send_form;
+        const button = document.getElementById('sendBtn');
+        socket.on('chat', function(msg){
+            let li = document.createElement('li');
+            li.className = "list-group-item";
+            li.textContent = msg;
+            messages.appendChild(li);
+        });
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            socket.emit('chat', form.text.value);
+            form.text.value = '';
+        })
+    </script>
+</body>
+</html>

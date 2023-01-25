@@ -1,10 +1,15 @@
 import * as http from "http";
 import {PORT} from "./config";
 import * as socketio from "socket.io";
+import * as fs from "fs";
 
+const html = fs.readFileSync("./index.html");
 const server = http.createServer(
     (req, res) => {
-        res.end("Hellooooooo!");
+        const url = req.url;
+        console.log('url=', url)
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(html);
     }
 );
 
@@ -28,17 +33,20 @@ io.on("connection", (socket: socketio.Socket) => {
         );
     });
 
+    socket.on('chat', function(msg){
+        console.log(`chat: ${msg}`);
+        io.emit('chat', msg);
+    });
+
     // clientにメッセージを送信
-    setInterval(() => {
-        socket.to(roomId).emit("server_to_client", {
-            message: {
-                socketId,
-                clientId,
-                roomId,
-                counter: counter++,
-            },
-        });
-    }, 1000);
+    socket.to(roomId).emit("server_to_client", {
+        message: {
+            socketId,
+            clientId,
+            roomId,
+            counter: counter++,
+        },
+    });
 });
 
 server.listen(PORT, () => {

@@ -11,18 +11,33 @@ const server = http.createServer(
 const io: socketio.Server = new socketio.Server(server);
 
 io.on("connection", (socket: socketio.Socket) => {
-    console.log("connect!")
+    const socketId = socket.id;
+    console.log(`[connect] socketId: ${socketId}`);
 
+    let clientId = "";
+    let roomId = "";
     let counter = 0;
 
     // clientからメッセージを受信
-    socket.on("yyy", (data: {message: string}) => {
-        console.log(`type: ${typeof data} data: ${data.message}`);
+    socket.on("join_to_room", (data: { clientId: string; roomId: string }) => {
+        roomId = data.roomId;
+        clientId = data.clientId;
+        socket.join(roomId);
+        console.log(
+            `[join to room] socketId: ${socketId} clientId: ${clientId} roomId: ${roomId}`,
+        );
     });
 
     // clientにメッセージを送信
     setInterval(() => {
-        socket.emit("xxx", {message: `server message ${counter++}`});
+        socket.to(roomId).emit("server_to_client", {
+            message: {
+                socketId,
+                clientId,
+                roomId,
+                counter: counter++,
+            },
+        });
     }, 1000);
 });
 

@@ -3,17 +3,18 @@ import {PORT} from "./config";
 
 const socket = io(`http://localhost:${PORT}`);
 
+const clientId = process.argv[2];
+const roomId = process.argv[3];
+console.log(`clientId: ${clientId} roomId: ${roomId}`);
+
 socket.on("connect", () => {
     console.log('connect!!')
 });
 
 // serverからメッセージを受信
-socket.on("xxx", (data: {message: string}) => {
-    console.log(`type: ${typeof data}   data: ${data.message}`);
+socket.on("server_to_client", (data: { message: object }) => {
+    console.log(JSON.stringify(data.message));
 });
 
 // serverにメッセージを送信
-let counter = 0;
-setInterval(() => {
-    socket.emit("yyy", {message: `client message ${counter++}`});
-}, 1000);
+socket.emit("join_to_room", { clientId, roomId });

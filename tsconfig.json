@@ -1,6 +1,11 @@
 {
     "compilerOptions": {
+        "outDir": "./build/",
+        "rootDir": "./src/",
         "module": "CommonJS",
         "strict": true,
-    }
+    },
+    "include": [
+        "./src/**/*"
+    ]
 }

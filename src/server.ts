@@ -2,16 +2,43 @@ import * as http from "http";
 import {PORT} from "./config";
 import * as socketio from "socket.io";
 import * as fs from "fs";
+// import * as url from "url";
+const url = require("url");
 
 const html = fs.readFileSync("./index.html");
-const server = http.createServer(
-    (req, res) => {
-        const url = req.url;
-        console.log('url=', url)
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(html);
+const css = fs.readFileSync("../css/bootstrap.min.css");
+const js = fs.readFileSync("../js/bootstrap.min.js");
+const main_js = fs.readFileSync("./main.js");
+
+const server: http.Server = http.createServer(function(req,res){
+    const urlParts = url.parse(req.url);
+    console.log("urlParts= ", urlParts);
+    switch(urlParts.pathname){
+        case "/":
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(html);
+            break;
+        case "/css/bootstrap.min.css":
+            res.writeHead(200, {"Content-Type": "text/css"});
+			res.write(css);
+			res.end();
+			break;
+        case "/js/bootstrap.min.js":
+            res.writeHead(200, {"Content-Type": "text/javascript"});
+            res.write(js);
+            res.end();
+            break;
+        case "/main.js":
+            res.writeHead(200, {"Content-Type": "text/javascript"});
+            res.write(main_js);
+            res.end();
+            break;
+        default:
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.end("No pages...");
+            break;
     }
-);
+})
 
 const io: socketio.Server = new socketio.Server(server);
 

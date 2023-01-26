@@ -12,11 +12,13 @@
   "devDependencies": {
     "@types/node": "^18.11.18",
     "ts-node": "^10.9.1",
+    "tsc-watch": "^6.0.0",
     "typescript": "^4.9.4"
   },
   "dependencies": {
     "express": "^4.18.2",
     "socket.io": "^4.5.4",
-    "socket.io-client": "^4.5.4"
+    "socket.io-client": "^4.5.4",
+    "url": "^0.11.0"
   }
 }

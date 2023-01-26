@@ -6,7 +6,7 @@ window.addEventListener("load",load);
 function load() {
     const connect_btn: any = document.getElementById('connect_btn');
     connect_btn.onclick = function() {
-        // connect();
+        connect();
         console.log("click");
     };
 }

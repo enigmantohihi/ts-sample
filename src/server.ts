@@ -2,17 +2,16 @@ import * as http from "http";
 import {PORT} from "./config";
 import * as socketio from "socket.io";
 import * as fs from "fs";
-// import * as url from "url";
 const url = require("url");
 
 const html = fs.readFileSync("./index.html");
 const css = fs.readFileSync("../css/bootstrap.min.css");
 const js = fs.readFileSync("../js/bootstrap.min.js");
-const main_js = fs.readFileSync("./main.js");
+const client_js = fs.readFileSync("./bundle.js");
 
 const server: http.Server = http.createServer(function(req,res){
     const urlParts = url.parse(req.url);
-    console.log("urlParts= ", urlParts);
+    // console.log("urlParts= ", urlParts);
     switch(urlParts.pathname){
         case "/":
             res.writeHead(200, {'Content-Type': 'text/html'});
@@ -28,9 +27,9 @@ const server: http.Server = http.createServer(function(req,res){
             res.write(js);
             res.end();
             break;
-        case "/main.js":
+        case "/bundle.js":
             res.writeHead(200, {"Content-Type": "text/javascript"});
-            res.write(main_js);
+            res.write(client_js);
             res.end();
             break;
         default:

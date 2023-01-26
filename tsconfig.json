@@ -2,7 +2,7 @@
     "compilerOptions": {
         "outDir": "./build/",
         "rootDir": "./src/",
-        "module": "CommonJS",
+        // "module": "CommonJS",
         "strict": true,
     },
     "include": [

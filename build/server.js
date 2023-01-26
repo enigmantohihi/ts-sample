@@ -4,15 +4,14 @@ var http = require("http");
 var config_1 = require("./config");
 var socketio = require("socket.io");
 var fs = require("fs");
-// import * as url from "url";
 var url = require("url");
 var html = fs.readFileSync("./index.html");
 var css = fs.readFileSync("../css/bootstrap.min.css");
 var js = fs.readFileSync("../js/bootstrap.min.js");
-var main_js = fs.readFileSync("./main.js");
+var client_js = fs.readFileSync("./bundle.js");
 var server = http.createServer(function (req, res) {
     var urlParts = url.parse(req.url);
-    console.log("urlParts= ", urlParts);
+    // console.log("urlParts= ", urlParts);
     switch (urlParts.pathname) {
         case "/":
             res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -28,9 +27,9 @@ var server = http.createServer(function (req, res) {
             res.write(js);
             res.end();
             break;
-        case "/main.js":
+        case "/bundle.js":
             res.writeHead(200, { "Content-Type": "text/javascript" });
-            res.write(main_js);
+            res.write(client_js);
             res.end();
             break;
         default:

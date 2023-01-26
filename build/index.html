@@ -8,39 +8,52 @@
 
     <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./main.js"></script>
+    <script>var exports = {};</script>
+    <!-- <script src="./client.js"></script> -->
+    <script src="./bundle.js"></script>
 </head>
 <body>
     <div class="container">
-        <form name="send_form">
-            <div class="mb=3">
-                <label class="form-label">Message</label>
-                <input class="form-control" type="text" id="message" name="text">
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary" id="sendBtn">Submit</button>
-        </form>
+        <div class="m-3">
+            <div class="row">
+                <div class="col-4">
+                    <label class="form-label">RoomID</label>
+                    <input class="form-control" type="text" id="roomid_text_box">
+                </div>
+                <div class="col-4">
+                    <label class="form-label">ClientID</label>
+                    <input class="form-control" type="text" id="clientid_text_box">
+                </div>
+                <div class="col-4">
+                    <div class="m-3">
+                        <button type="submit" class="btn btn-primary" id="connect_btn">Connect</button>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        
         <ul class="list-group" id="messages">
         </ul>
     </div>
-    <script src="socket.io/socket.io.js"></script>
+    <!-- <script src="socket.io/socket.io.js"></script> -->
     <script>
+        console.log("UNKO");
         // サーバーへ接続
-        const socket = io();
-        const messages = document.getElementById('messages');
-        const form = document.forms.send_form;
-        const button = document.getElementById('sendBtn');
-        socket.on('chat', function(msg){
-            let li = document.createElement('li');
-            li.className = "list-group-item";
-            li.textContent = msg;
-            messages.appendChild(li);
-        });
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            socket.emit('chat', form.text.value);
-            form.text.value = '';
-        })
+        // const socket = io();
+        // const messages = document.getElementById('messages');
+        // const form = document.forms.send_form;
+        // const button = document.getElementById('sendBtn');
+        // socket.on('chat', function(msg){
+        //     let li = document.createElement('li');
+        //     li.className = "list-group-item";
+        //     li.textContent = msg;
+        //     messages.appendChild(li);
+        // });
+        // button.addEventListener('click', function(e) {
+        //     e.preventDefault();
+        //     socket.emit('chat', form.text.value);
+        //     form.text.value = '';
+        // })
     </script>
 </body>
 </html>

@@ -11,7 +11,7 @@ const client_js = fs.readFileSync("./bundle.js");
 
 const server: http.Server = http.createServer(function(req,res){
     const urlParts = url.parse(req.url);
-    // console.log("urlParts= ", urlParts);
+    // console.log("urlParts = ", urlParts);
     switch(urlParts.pathname){
         case "/":
             res.writeHead(200, {'Content-Type': 'text/html'});
@@ -42,36 +42,44 @@ const server: http.Server = http.createServer(function(req,res){
 const io: socketio.Server = new socketio.Server(server);
 
 io.on("connection", (socket: socketio.Socket) => {
-    const socketId = socket.id;
-    console.log(`[connect] socketId: ${socketId}`);
+    const socket_id = socket.id;
+    console.log(`[connect] socketId: ${socket_id}`);
+    // socket.to(roomId).emit("server_to_client", {
+    //     message: {
+    //         socket_id,
+    //         clientId,
+    //         roomId,
+    //         counter: counter++,
+    //     },
+    // });
 
-    let clientId = "";
-    let roomId = "";
-    let counter = 0;
+    // let clientId = "";
+    let room_id: string = "";
 
     // clientからメッセージを受信
-    socket.on("join_to_room", (data: { clientId: string; roomId: string }) => {
-        roomId = data.roomId;
-        clientId = data.clientId;
-        socket.join(roomId);
-        console.log(
-            `[join to room] socketId: ${socketId} clientId: ${clientId} roomId: ${roomId}`,
-        );
+    socket.on("connected_client", (data) => {
+        room_id = data.room_id;
+        let user_name = data.user_name;
+        console.log("[connected_client!]" + `room_id:${room_id}, user_name:${user_name}`);
+        socket.join(room_id);
+
+        // clientにメッセージを送信
+        // socket.to(room_id).emit("join_client", {client_id: socket_id, room_id: room_id, user_name: user_name });
+        socket.emit("join_client", {socket_id, room_id, user_name });
     });
+    
+    // socket.on("join_to_room", (data: { clientId: string; roomId: string }) => {
+    //     roomId = data.roomId;
+    //     clientId = data.clientId;
+    //     socket.join(roomId);
+    //     console.log(
+    //         `[join to room] clientId: ${clientId} roomId: ${roomId}`,
+    //     );
+    // });
 
     socket.on('chat', function(msg){
         console.log(`chat: ${msg}`);
         io.emit('chat', msg);
-    });
-
-    // clientにメッセージを送信
-    socket.to(roomId).emit("server_to_client", {
-        message: {
-            socketId,
-            clientId,
-            roomId,
-            counter: counter++,
-        },
     });
 });
 

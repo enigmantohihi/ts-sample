@@ -9,6 +9,7 @@
     <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
     <script>var exports = {};</script>
+    <!-- <script src="socket.io/socket.io.js"></script> -->
     <!-- <script src="./client.js"></script> -->
     <script src="./bundle.js"></script>
 </head>
@@ -21,23 +22,24 @@
                     <input class="form-control" type="text" id="roomid_text_box">
                 </div>
                 <div class="col-4">
-                    <label class="form-label">ClientID</label>
-                    <input class="form-control" type="text" id="clientid_text_box">
+                    <label class="form-label">UserName</label>
+                    <input class="form-control" type="text" id="username_text_box">
                 </div>
                 <div class="col-4">
-                    <div class="m-3">
-                        <button type="submit" class="btn btn-primary" id="connect_btn">Connect</button>
+                    <div class="w-100">
+                        <button type="submit" class="btn btn-primary mb-1 w-100" id="connect_btn">Connect</button>
+                        <button type="submit" class="btn btn-danger w-100" id="disconnect_btn">Disconnect</button>
                     </div>
                 </div>
             </div>  
         </div>
         
-        <ul class="list-group" id="messages">
+        <ul class="list-group list-group-flush m-3" id="message_list">
         </ul>
     </div>
-    <!-- <script src="socket.io/socket.io.js"></script> -->
+   
     <script>
-        console.log("UNKO");
+        // console.log("UNKO");
         // サーバーへ接続
         // const socket = io();
         // const messages = document.getElementById('messages');
